@@ -14,7 +14,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/Services', function () {
+Route::get('/services', function () {
     return Inertia::render('Services', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -23,7 +23,7 @@ Route::get('/Services', function () {
     ]);
 });
 
-Route::get('/ContactUs', function () {
+Route::get('/contactUs', function () {
     return Inertia::render('ContactUs', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),

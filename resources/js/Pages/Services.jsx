@@ -22,12 +22,12 @@ export default function Services({ auth, laravelVersion, phpVersion }) {
                             </h1>
                         </div>
                         <div className='h-92'>
-                            <img className="w-full" src="/docs/images/services/retuning.jpg" alt="Retuning image" />
+                            <img className="w-full" src="/docs/images/ourServices/retuning.jpg" alt="Retuning image" />
                         </div>
                     </div>
                     <div className='grid grid-cols-2 auto-cols-max items-center bg-slate-100'>
                         <div className='h-92'>
-                            <img className="w-full" src="/docs/images/services/repair.jpg" alt="Repair image" />
+                            <img className="w-full" src="/docs/images/ourServices/repair.jpg" alt="Repair image" />
                         </div>
                         <div>
                             <h1 className='text-center text-3xl font-black'>
@@ -42,12 +42,12 @@ export default function Services({ auth, laravelVersion, phpVersion }) {
                             </h1>
                         </div>
                         <div className='h-92'>
-                            <img className="w-full" src="/docs/images/services/restoration.jpg" alt="Moving image" />
+                            <img className="w-full" src="/docs/images/ourServices/restoration.jpg" alt="Moving image" />
                         </div>
                     </div>
                     <div className='grid grid-cols-2 auto-cols-max items-center bg-slate-100'>
                         <div className='h-92'>
-                            <img className="w-full" src="/docs/images/services/moving.jpg" alt="Retuning image" />
+                            <img className="w-full" src="/docs/images/ourServices/moving.jpg" alt="Retuning image" />
                         </div>
                         <div>
                             <h1 className='text-center text-3xl font-black'>
