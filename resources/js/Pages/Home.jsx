@@ -29,7 +29,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
             <main>
                 {/* Carousel */}
                 <div>
-                    <div id="default-carousel" className="relative w-full" data-carousel="slide">
+                    <div className="relative w-full" data-carousel="slide">
                         {/* <!-- Carousel wrapper --> */}
                         <div className="relative h-72 overflow-hidden md:h-96">
                             {/* <!-- Item 1 --> */}
@@ -99,7 +99,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                         </div>
                     </div>
                     <div className='sm:hidden'>
-                        <div id="default-carousel" className="relative w-full" data-carousel="slide">
+                        <div className="relative w-full" data-carousel="slide">
                             <div className="relative h-28 overflow-hidden items-center">
                                 {brandList.map((item, index) => (
                                     <div className="hidden duration-700 ease-in-out" data-carousel-item key={item.brand+"_"+index+"carousel"}>
@@ -142,7 +142,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                         </div>
                     </div>
                     <div className='sm:hidden'>
-                        <div id="default-carousel" className="relative w-full" data-carousel="static">
+                        <div className="relative w-full" data-carousel="static">
                             <div className="relative h-112 overflow-hidden">
                                 {productList.map((item, index) => (
                                     <div className="hidden duration-700 ease-in-out" data-carousel-item key={item.model+"_"+index+"carousel"}>
