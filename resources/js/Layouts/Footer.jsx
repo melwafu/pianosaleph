@@ -49,7 +49,7 @@ export default function Footer ({pages}) {
                                         </svg>
                                     </div>
                                     <div className="px-2">
-                                        <a href="https://www.facebook.com/profile.php?id=100090317593893" className="bar bvo">
+                                        <a href="https://www.facebook.com/profile.php?id=100090317593893" target="_blank" className="bar bvo">
                                             Piano Sale PH
                                         </a>
                                     </div>

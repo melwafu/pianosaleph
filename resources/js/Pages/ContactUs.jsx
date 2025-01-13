@@ -55,7 +55,9 @@ export default function ContactUs({ auth, laravelVersion, phpVersion }) {
                                 </svg>
                             </div>
                             <h1>FACEBOOK</h1>
-                            Piani Sale PH
+                            <a href="https://www.facebook.com/profile.php?id=100090317593893" target="_blank" className="bar bvo">
+                                Piano Sale PH
+                            </a>
                         </div>
                     </div>  
                 </div>
