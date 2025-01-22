@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,13 +35,21 @@ Route::get('/contactUs', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Admin/Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('products', [ProductController::class, 'index']);
+    Route::post('products/search', [ProductController::class, 'search']);
+    Route::resource('products', ProductController::class)->except('index');
+
+    Route::get('categories', [ProductCategoryController::class, 'index']);
+    Route::post('categories/search', [ProductCategoryController::class, 'search']);
+    Route::resource('categories', ProductCategoryController::class)->except('index');
 });
 
 require __DIR__.'/auth.php';
