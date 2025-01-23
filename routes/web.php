@@ -1,20 +1,24 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductInventoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', function () {
+
+//     return Inertia::render('Home', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::get('/services', function () {
     return Inertia::render('Services', [
@@ -44,8 +48,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('products', [ProductController::class, 'index']);
+    Route::post('products/customUpdate', [ProductController::class, 'customUpdate']);
     Route::post('products/search', [ProductController::class, 'search']);
     Route::resource('products', ProductController::class)->except('index');
+
+    Route::get('inventories', [ProductInventoryController::class, 'index']);
+    Route::post('inventories/search', [ProductInventoryController::class, 'search']);
+    Route::resource('inventories', ProductInventoryController::class)->except('index');
 
     Route::get('categories', [ProductCategoryController::class, 'index']);
     Route::post('categories/search', [ProductCategoryController::class, 'search']);

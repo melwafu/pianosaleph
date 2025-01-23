@@ -6,11 +6,69 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
+use DB;
+
 
 class ProductController extends Controller
 {
+    public function customUpdate(Request $request) {
+        $data = $request->validate([
+            'name' => ['required'],
+            'price' => ['required'],
+            'product_category_id' => ['required'],
+            'description' => ['nullable'],
+        ]);
+        
+        DB::beginTransaction();
+
+        try {
+            $product = Product::find($request->id);
+            $product->update($data);
+
+            $productImage = DB::table('product_images')
+            ->where('product_id', '=', $request->id)
+            ->first();
+
+            // dd($productImage);
+            if($request->image != null) {
+                $imageName = time().'.'.$request->image->extension();
+                if($productImage) {
+                    // // Delete exesting image
+                    $file_path = public_path($productImage->image);
+                    if (File::exists($file_path)) {
+                        File::delete($file_path);
+                    };
+                    // Upload new image
+                    $updateProductImage = ProductImage::find($productImage->id);
+                    $updateProductImage->image = 'docs/images/productsImage/'.$imageName;
+                    $updateProductImage->save();
+                } else {
+                    $productNewImage = new ProductImage;
+                    $productNewImage->product_id = $product->id;
+                    $productNewImage->order = 1;
+                    $productNewImage->image = 'docs/images/productsImage/'.$imageName;
+                    $productNewImage->save();
+                };
+
+                // Resize Image
+                $img = Image::read($request->image->path());
+                $img->resize(500, 500, function ($constraint) {$constraint->aspectRatio();});
+                $img->save(public_path('docs/images/productsImage/'. $imageName));
+            };
+
+            DB::commit();
+            // all good
+            return redirect()->back()
+            ->with('success', 'Saved Successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->back()
+            ->with('error', $e);
+        }
+    }
 
     public function search(Request $request) {
         $products;
@@ -98,7 +156,7 @@ class ProductController extends Controller
             'description' => ['nullable'],
             'product_category_id' => ['required'],
             'price' => ['required'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
         ]);
         
         DB::beginTransaction();
@@ -107,20 +165,23 @@ class ProductController extends Controller
 
             $product = Product::create($data);
 
-            $imageName = time().'.'.$request->image->extension();
+            // Upload Image
+            if($request->image != null && $request->image != '') {
+                $imageName = time().'.'.$request->image->extension();
 
-            // Resize Image
-            $img = Image::read($request->image->path());
-            $img->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save(public_path('docs/images/productsImage/'. $imageName));
-
-            $productImage = new ProductImage;
-            $productImage->product_id = $product->id;
-            $productImage->order = 1;
-            $productImage->image = 'docs/images/productsImage/'.$imageName;
-            $productImage->save();
+                // Resize Image
+                $img = Image::read($request->image->path());
+                $img->resize(500, 500, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $img->save(public_path('docs/images/productsImage/'. $imageName));
+    
+                $productImage = new ProductImage;
+                $productImage->product_id = $product->id;
+                $productImage->order = 1;
+                $productImage->image = 'docs/images/productsImage/'.$imageName;
+                $productImage->save();
+            };
         
             DB::commit();
             // all good
@@ -155,29 +216,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $data = $request->validate([
-            'name' => ['required'],
-            'price' => ['required'],
-            'product_category_id' => ['required'],
-            'description' => ['nullable'],
-        ]);
-        
-        DB::beginTransaction();
 
-        try {
-            $product = Product::find($request->id);
-            $product->update($data);
-        
-            DB::commit();
-            // all good
-            return redirect()->back()
-            ->with('success', 'Saved Successfully');
-        } catch (\Exception $e) {
-            DB::rollback();
-            // something went wrong
-            return redirect()->back()
-            ->with('error', $e);
-        }
     }
 
     /**

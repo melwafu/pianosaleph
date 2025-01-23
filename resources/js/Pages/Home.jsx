@@ -13,14 +13,9 @@ const brandList = [
     {brand: "YOUNG CHANG", imagePath: "/docs/images/brands/young-chang.jpeg"},
 ];
 
-const productList = [
-    { model: 'Yamaha', description: "Yamaha Console Piano million series", price: "110,000", imagePath: "/docs/images/products/piano/img-1.jpg", href: '#', current: true },
-    { model: 'Pearl River', description:"Pearl River Console Piano", price: "65,000", imagePath: "/docs/images/products/piano/img-2.jpg", href: '#', current: false },
-    { model: 'Yamaha', description: "Yamaha U1 million series", price: "85,000", imagePath: "/docs/images/products/piano/img-3.jpg", href: '#', current: false },
-    { model: 'Kawai', description: "Kawai CE -8 Console Piano", price: "100,000", imagePath: "/docs/images/products/piano/img-4.jpg", href: '#', current: false },
-];
 
-export default function Home({ auth, laravelVersion, phpVersion }) {
+export default function Home({consoles}) {
+    console.log("console: ", consoles);
     initFlowbite();
     return (
         <>
@@ -113,22 +108,21 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                 <div className='container mx-auto p-5'>
                     <div className='pb-5'>
                         <h1 className='font-sans text-xl font-black'>
-                            PRODUCTS
+                            PIANO
                         </h1>
                     </div>
                     <div className='hidden sm:block'>             
                         <div className='grid grid-cols-4 auto-cols-max gap-10'>
-                            {productList.map((item, index) => (
-                                <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700" key={item.model+"_"+index}>
+                            {consoles.map((item, index) => (
+                                <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700" key={item.product_category+"_"+index}>
                                     <a href="#">
-                                        <img className="p-8 rounded-t-lg" src={item.imagePath} alt="product image" />
+                                        <img className="p-8 rounded-t-lg" src={item.image} alt="product image" />
                                     </a>
                                     <div className="px-5 pb-5">
-                                        <a href="#">
-                                            <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.description}</h5>
-                                        </a>
+                                        <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.name}</h5>
+                                        <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.product_category}</h5>
                                         <div className="flex items-center justify-between">
-                                            <span className="text-1xl font-bold text-gray-900 dark:text-white">&#8369; {item.price}</span>
+                                            <span className="text-1xl font-bold text-gray-900 dark:text-white">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +132,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                     <div className='sm:hidden'>
                         <div className="relative w-full" data-carousel="static">
                             <div className="relative h-112 overflow-hidden">
-                                {productList.map((item, index) => (
+                                {consoles.map((item, index) => (
                                     <div className="hidden duration-700 ease-in-out" data-carousel-item key={item.model+"_"+index+"carousel"}>
                                         <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
                                             <a href="#">
@@ -149,7 +143,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                                                     <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.description}</h5>
                                                 </a>
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-1xl font-bold text-gray-900 dark:text-white">&#8369; {item.price}</span>
+                                                    <span className="text-1xl font-bold text-gray-900 dark:text-white">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</span>
                                                 </div>
                                             </div>
                                         </div>

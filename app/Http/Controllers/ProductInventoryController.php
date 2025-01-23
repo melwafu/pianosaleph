@@ -13,7 +13,8 @@ class ProductInventoryController extends Controller
      */
     public function index()
     {
-        //
+        $inventories = ProductInventory::latest()->paginate(10);
+        return inertia("Admin/Inventory", ['inventories' => $inventories]);
     }
 
     /**

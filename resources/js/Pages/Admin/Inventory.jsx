@@ -2,15 +2,13 @@ import AdminLayout from '@/Admin/AdminLayout';
 import { modalFunction } from '@/Admin/Helper';
 import { useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import Select from 'react-select'
 import Toast from '@/Components/Toast';
 import Pagination from '@/Components/Pagination';
 
-function Children(products, category) {
+function Children(inventories) {
     const modal = modalFunction('crud-modal');
     const [refresh, setRefresh] = useState(false);
-    const [dataTable, setDataTable] = useState(products);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [dataTable, setDataTable] = useState(inventories);
     const [toast, setToast] = useState({
         show: false,
         type: "",
@@ -19,46 +17,30 @@ function Children(products, category) {
     const {data, setData, post, put, errors, processing} = useForm({
         id: 0,
         name: "",
-        description: "",
-        price: null,
-        product_category_id: null,
-        product_category: null,
-        image: null
+        description: ""
     });
 
     // Refresh Table
     useEffect(() => {
         if(refresh) {
-            setDataTable(products);
+            setDataTable(inventories);
             setRefresh(false);
         }
-    }, [refresh]);
-
-    // Append null value in first load
-    useEffect(() => {
-        category.unshift({value: null, label: "Select..."})
-    }, []);
+    },[refresh]);
 
     // Clear
     function clearData () {
         setData({
             id: 0,
             name: "",
-            description: "",
-            price: null,
-            product_category_id: null,
-            product_category: null,
-            image: null
-        });
-        setSelectedOption({value: null, label: "Select..."});
-        let fileInput = document.getElementById('file_input');
-        if(fileInput !== null) { fileInput.value = null };
+            description: ""
+        })
     };
 
     // Search
     function search(e) {
         e.preventDefault();
-        post('/products/search', {
+        post('/inventories/search', {
             preserveScroll: true,
             resetOnSuccess: false,
             onSuccess: (response) => {
@@ -72,7 +54,7 @@ function Children(products, category) {
     // Submit
     function submit(e) {
         e.preventDefault();
-        post('/products', {  
+        post('/inventories', {  
             preserveScroll: true,
             resetOnSuccess: false,
             onSuccess: (response) => {
@@ -91,7 +73,7 @@ function Children(products, category) {
     // Update
     function update(e) {
         e.preventDefault();
-        post('products/customUpdate', {  
+        put(`/inventories/${data.id}`, {  
             preserveScroll: true,
             resetOnSuccess: false,
             onSuccess: (response) => {
@@ -121,32 +103,12 @@ function Children(products, category) {
 
     // Edit
     function edit(item) {
-        clearData();
-        setData((prevState) => ({
-            ...prevState,
+        setData({
             id: item.id,
             name: item.name,
-            description: item.description,
-            price: item.price,
-            product_category_id: item.product_category_id,
-            product_category: item.product_category,
-            image_path: item.image
-        }));
-        setSelectedOption({
-            value: item.product_category_id, 
-            label: item.product_category
-        });
+            description: item.description
+        })
         modal.show();
-    };
-
-    // Select on change
-    function selectOnChange(option) {
-        setData((prevState) => ({
-            ...prevState,
-            product_category_id: option.value,
-            product_category: option.label
-        }));
-        setSelectedOption(option);
     };
     
     return(
@@ -165,13 +127,13 @@ function Children(products, category) {
                 </button>
                 {/* <!-- Main modal --> */}
                 <div id="crud-modal" tabIndex="-1" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div className="relative p-4 w-full max-w-2xl max-h-full">
+                    <div className="relative p-4 w-full max-w-md max-h-full">
                         {/* <!-- Modal content --> */}
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                             {/* <!-- Modal header --> */}
                             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    {data.id > 0 ? "Edit Product" : "Create New Product"}
+                                    {data.id > 0 ? "Edit Category" : "Create New Category"}
                                 </h3>
                                 <button 
                                     type="button" 
@@ -185,78 +147,33 @@ function Children(products, category) {
                                 </button>
                             </div>
                             {/* <!-- Modal body --> */}
-                            <form id="form" className="p-4 md:p-5" onSubmit={data.id > 0 ? update : submit} encType="multipart/form-data">
-                                <div className="grid gap-4 mb-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
-                                    <div className="col-span-1">
-                                        <div className="px-1 py-1">
-                                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                            <input 
-                                                type="text" 
-                                                name="name" 
-                                                id="name" 
-                                                className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Type category name"
-                                                value={data.name}
-                                                onChange={(e) => setData("name", e.target.value)}
-                                            />
-                                            {errors.name && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.name}</p>}
-                                        </div>
-
-                                        <div className="px-1 py-1">
-                                            <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                            <input 
-                                                type="number" 
-                                                name="price" 
-                                                id="price" 
-                                                className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
-                                                placeholder="&#8369;2999" 
-                                                value={data.price !== null ? data.price : ""}
-                                                onChange={(e) => setData("price", e.target.value)}
-                                            />
-                                            {errors.price && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.price}</p>}
-                                        </div>
-                                        
-                                        <div className="px-1 py-1">
-                                            <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                            <Select 
-                                                value={selectedOption}
-                                                onChange={(option) => selectOnChange(option)}
-                                                options={category} 
-                                            />
-                                            {errors.product_category_id && <p className="mt-2 text-sm text-red-600 dark:text-red-500">The category field is required.</p>}
-                                        </div>
-
-                                        <div className="px-1 py-1">
-                                            <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                                            <textarea 
-                                                id="description" 
-                                                rows="4" 
-                                                className="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                placeholder="Write product description here"
-                                                value={data.description !== null ? data.description : ""}
-                                                onChange={(e) => setData("description", e.target.value)}
-                                            > 
-                                            </textarea>                    
-                                        </div>
+                            <form className="p-4 md:p-5" onSubmit={data.id > 0 ? update : submit}>
+                                <div className="grid gap-4 mb-4 grid-cols-2">
+                                    <div className="col-span-2">
+                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                        <input 
+                                            type="text" 
+                                            name="name" 
+                                            id="name" 
+                                            className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Type category name"
+                                            value={data.name}
+                                            onChange={(e) => setData("name", e.target.value)}
+                                        />
+                                        {errors.name && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.name}</p>}
                                     </div>
 
-                                    <div className='col-span-1 px-1 py-1'>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload Image</label>
-                                        <input 
-                                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                            aria-describedby="file_input_help" 
-                                            id="file_input" 
-                                            type="file" 
-                                            onChange={(e) => setData("image", e.target.files[0])}
-                                        />
-                                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF.</p>
-                                        {errors.image && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image}</p>}
-                                        {data.id > 0 && (
-                                            <>
-                                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
-                                                <img style={{height: "215px", width: '285px'}} width={300} className="max-w-lg mx-auto" src={data.image_path} />
-                                            </>
-                                        )}
+                                    <div className="col-span-2">
+                                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Description</label>
+                                        <textarea 
+                                            id="description" 
+                                            rows="4" 
+                                            className="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                            placeholder="Write category description here"
+                                            value={data.description !== null ? data.description : ""}
+                                            onChange={(e) => setData("description", e.target.value)}
+                                        > 
+                                        </textarea>                    
                                     </div>
                                 </div>
                                 <button 
@@ -315,12 +232,6 @@ function Children(products, category) {
                                     Description
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    price
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Category
-                                </th>
-                                <th scope="col" className="px-6 py-3">
                                     Date Created
                                 </th>
                             </tr>
@@ -337,8 +248,6 @@ function Children(products, category) {
                                     </td>
                                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</td>
                                     <td className="px-6 py-4">{item.description}</td>
-                                    <td className="px-6 py-4">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
-                                    <td className="px-6 py-4">{item.product_category}</td>
                                     <td className="px-6 py-4">{new Date(item.created_at).toLocaleDateString("en-US")}</td>
                                 </tr>
                             ))}
@@ -352,11 +261,11 @@ function Children(products, category) {
     )
 }
 
-function Products({products, category}) {
-    const children = Children(products, category);
+function Category({inventories}) {
+    const children = Children(inventories);
     return (
-        <AdminLayout head="Products" children={children} />
+        <AdminLayout head="Inventories" children={children} />
     );
 }
 
-export default Products;
+export default Category;
