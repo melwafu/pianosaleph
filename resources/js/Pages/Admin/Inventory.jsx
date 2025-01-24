@@ -242,7 +242,7 @@ function Children(inventories, products) {
                                     Quantity
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-right">
-                                    Price
+                                    Unit Price
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-right">
                                     Total Price
