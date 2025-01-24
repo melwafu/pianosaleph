@@ -140,7 +140,7 @@ export default function Home({consoles}) {
                         <div className='grid grid-cols-4 auto-cols-max gap-10'>
                         {consoles.map((item, index) => 
                                 {
-                                    if(index >= 4 && index <= 8) {
+                                    if(index > 4 && index <= 8) {
                                         return (
                                             <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700" key={item.product_category+"_"+index}>
                                                 <a href="#">

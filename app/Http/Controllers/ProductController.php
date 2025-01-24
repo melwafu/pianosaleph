@@ -7,7 +7,7 @@ use App\Models\ProductImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Laravel\Facades\Image;
+// use Intervention\Image\Laravel\Facades\Image;
 use DB;
 
 
@@ -52,10 +52,11 @@ class ProductController extends Controller
                     $productNewImage->save();
                 };
 
-                // Resize Image
-                $img = Image::read($request->image->path());
-                $img->resize(500, 500, function ($constraint) {$constraint->aspectRatio();});
-                $img->save(public_path('docs/images/productsImage/'. $imageName));
+                // // Resize Image
+                // $img = Image::read($request->image->path());
+                // $img->resize(500, 500, function ($constraint) {$constraint->aspectRatio();});
+                // $img->save(public_path('docs/images/productsImage/'. $imageName));
+                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
             };
 
             DB::commit();
@@ -169,12 +170,13 @@ class ProductController extends Controller
             if($request->image != null && $request->image != '') {
                 $imageName = time().'.'.$request->image->extension();
 
-                // Resize Image
-                $img = Image::read($request->image->path());
-                $img->resize(500, 500, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $img->save(public_path('docs/images/productsImage/'. $imageName));
+                // // Resize Image
+                // $img = Image::read($request->image->path());
+                // $img->resize(500, 500, function ($constraint) {
+                //     $constraint->aspectRatio();
+                // });
+                // $img->save(public_path('docs/images/productsImage/'. $imageName));
+                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
     
                 $productImage = new ProductImage;
                 $productImage->product_id = $product->id;
