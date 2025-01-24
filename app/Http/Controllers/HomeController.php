@@ -34,6 +34,7 @@ class HomeController extends Controller
             'product_category',
             'pimg.image'
         )
+        ->where('quantity', '>', 0)
         ->inRandomOrder()
         ->limit(8)
         ->get();
@@ -43,5 +44,6 @@ class HomeController extends Controller
         ->get();
 
         return inertia("Home", ['consoles' => $consoles, 'category' => $category]);
+
     }
 }
