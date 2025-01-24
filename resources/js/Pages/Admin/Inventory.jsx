@@ -2,13 +2,15 @@ import AdminLayout from '@/Admin/AdminLayout';
 import { modalFunction } from '@/Admin/Helper';
 import { useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import Select from 'react-select'
 import Toast from '@/Components/Toast';
 import Pagination from '@/Components/Pagination';
 
-function Children(inventories) {
+function Children(inventories, products) {
     const modal = modalFunction('crud-modal');
     const [refresh, setRefresh] = useState(false);
     const [dataTable, setDataTable] = useState(inventories);
+    const [selectedOption, setSelectedOption] = useState(null);
     const [toast, setToast] = useState({
         show: false,
         type: "",
@@ -16,8 +18,9 @@ function Children(inventories) {
     });
     const {data, setData, post, put, errors, processing} = useForm({
         id: 0,
-        name: "",
-        description: ""
+        product_id: "",
+        product_name: "",
+        quantity: "",
     });
 
     // Refresh Table
@@ -32,9 +35,11 @@ function Children(inventories) {
     function clearData () {
         setData({
             id: 0,
-            name: "",
-            description: ""
-        })
+            product_id: 0,
+            product_name: "",
+            quantity: "",
+        });
+        setSelectedOption({value: null, label: "Select..."});
     };
 
     // Search
@@ -110,6 +115,16 @@ function Children(inventories) {
         })
         modal.show();
     };
+
+    // Select on change
+    function selectOnChange(option) {
+        setData((prevState) => ({
+            ...prevState,
+            product_id: option.value,
+            product_name: option.label
+        }));
+        setSelectedOption(option);
+    };
     
     return(
         <>
@@ -122,8 +137,7 @@ function Children(inventories) {
                     className="block inline-flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
                     type="button"
                     onClick={() => openModal()}>
-                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
-                    Add
+                    Create
                 </button>
                 {/* <!-- Main modal --> */}
                 <div id="crud-modal" tabIndex="-1" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -133,7 +147,7 @@ function Children(inventories) {
                             {/* <!-- Modal header --> */}
                             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    {data.id > 0 ? "Edit Category" : "Create New Category"}
+                                    {data.id > 0 ? "Edit Product" : "Product"}
                                 </h3>
                                 <button 
                                     type="button" 
@@ -150,30 +164,26 @@ function Children(inventories) {
                             <form className="p-4 md:p-5" onSubmit={data.id > 0 ? update : submit}>
                                 <div className="grid gap-4 mb-4 grid-cols-2">
                                     <div className="col-span-2">
-                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                        <input 
-                                            type="text" 
-                                            name="name" 
-                                            id="name" 
-                                            className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            placeholder="Type category name"
-                                            value={data.name}
-                                            onChange={(e) => setData("name", e.target.value)}
-                                        />
-                                        {errors.name && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.name}</p>}
+                                    <label htmlFor="product" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product</label>
+                                            <Select 
+                                                value={selectedOption}
+                                                onChange={(option) => selectOnChange(option)}
+                                                options={products} 
+                                            />
+                                            {errors.product_id && <p className="mt-2 text-sm text-red-600 dark:text-red-500">The product field is required.</p>}
                                     </div>
-
                                     <div className="col-span-2">
-                                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Description</label>
-                                        <textarea 
-                                            id="description" 
-                                            rows="4" 
-                                            className="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                            placeholder="Write category description here"
-                                            value={data.description !== null ? data.description : ""}
-                                            onChange={(e) => setData("description", e.target.value)}
-                                        > 
-                                        </textarea>                    
+                                        <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                                        <input 
+                                            type="number" 
+                                            name="quantity" 
+                                            id="quantity" 
+                                            className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                                            placeholder="Product Quantity" 
+                                            value={data.quantity}
+                                            onChange={(e) => setData("quantity", e.target.value)}
+                                        />
+                                        {errors.quantity && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.quantity}</p>}
                                     </div>
                                 </div>
                                 <button 
@@ -186,7 +196,7 @@ function Children(inventories) {
                                         "Update" 
                                         : 
                                         <>
-                                            <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> Add
+                                            Save
                                         </>
                                     }
                                 </button>
@@ -222,33 +232,37 @@ function Children(inventories) {
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-6 py-3">
+                                {/* <th scope="col" className="px-6 py-3">
                                     Action
-                                </th>
+                                </th> */}
                                 <th scope="col" className="px-6 py-3">
                                     Name
                                 </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Description
+                                <th scope="col" className="px-6 py-3 text-right">
+                                    Quantity
                                 </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Date Created
+                                <th scope="col" className="px-6 py-3 text-right">
+                                    Price
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-right">
+                                    Total Price
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {dataTable.data && dataTable.data?.map(item => (
                                 <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td className="px-6 py-4">
+                                    {/* <td className="px-6 py-4">
                                         <a 
                                             href="#" 
                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                             onClick={() => edit(item)}
                                         >Edit</a>
-                                    </td>
+                                    </td> */}
                                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</td>
-                                    <td className="px-6 py-4">{item.description}</td>
-                                    <td className="px-6 py-4">{new Date(item.created_at).toLocaleDateString("en-US")}</td>
+                                    <td className="px-6 py-4 text-right">{item.quantity}</td>
+                                    <td className="px-6 py-4 text-right">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
+                                    <td className="px-6 py-4 text-right">{Number((item.quantity * item.price)).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -261,8 +275,8 @@ function Children(inventories) {
     )
 }
 
-function Category({inventories}) {
-    const children = Children(inventories);
+function Category({inventories, products}) {
+    const children = Children(inventories, products);
     return (
         <AdminLayout head="Inventories" children={children} />
     );

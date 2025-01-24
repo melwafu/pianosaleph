@@ -13,7 +13,8 @@ class HomeController extends Controller
     {
         $consoles = DB::table('products as p')
         ->leftJoin('product_categories as pc', 'p.product_category_id', '=', 'pc.id')
-        ->leftJoin('product_images as pi', 'p.id', '=', 'pi.product_id')
+        ->leftJoin('product_images as pimg', 'p.id', '=', 'pimg.product_id')
+        ->leftJoin('product_inventories as pi', 'p.id', '=', 'pi.product_id')
         ->select(
             'p.id', 
             'p.name', 
@@ -21,10 +22,19 @@ class HomeController extends Controller
             'p.description', 
             'p.created_at', 
             'pc.name as product_category', 
-            'pc.id as product_category_id',
-            'pi.image'
+            'pimg.image',
+            DB::raw('(CASE WHEN sum(pi.quantity) != 0 THEN sum(pi.quantity) ELSE 0 END) AS quantity')
         )
-        ->orderBy('p.id', 'DESC')
+        ->groupBy(
+            'p.id', 
+            'p.name', 
+            'p.price', 
+            'p.description', 
+            'p.created_at', 
+            'product_category',
+            'pimg.image'
+        )
+        ->where('quantity', '>', 0)
         ->inRandomOrder()
         ->limit(4)
         ->get();

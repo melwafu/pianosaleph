@@ -116,7 +116,9 @@ export default function Home({consoles}) {
                             {consoles.map((item, index) => (
                                 <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700" key={item.product_category+"_"+index}>
                                     <a href="#">
-                                        <img className="p-8 rounded-t-lg" src={item.image} alt="product image" />
+                                        <div className='h-80'>
+                                            <img className="p-8 rounded-t-lg h-full w-full" src={item.image} alt="product image" />
+                                        </div>
                                     </a>
                                     <div className="px-5 pb-5">
                                         <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.name}</h5>
@@ -131,17 +133,16 @@ export default function Home({consoles}) {
                     </div>
                     <div className='sm:hidden'>
                         <div className="relative w-full" data-carousel="static">
-                            <div className="relative h-112 overflow-hidden">
+                            <div className="relative h-115 overflow-hidden">
                                 {consoles.map((item, index) => (
                                     <div className="hidden duration-700 ease-in-out" data-carousel-item key={item.model+"_"+index+"carousel"}>
                                         <div className="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
-                                            <a href="#">
-                                                <img className="p-8 rounded-t-lg" src={item.imagePath} alt={item.model} />
-                                            </a>
-                                            <div className="px-5 pb-5">
-                                                <a href="#">
-                                                    <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.description}</h5>
-                                                </a>
+                                            <div className='h-80'>
+                                                <img className="p-8 rounded-t-lg h-full w-full" src={item.image} />
+                                            </div>
+                                            <div className="px-8 pb-5">
+                                                <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.name}</h5>
+                                                <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{item.product_category}</h5>
                                                 <div className="flex items-center justify-between">
                                                     <span className="text-1xl font-bold text-gray-900 dark:text-white">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</span>
                                                 </div>
