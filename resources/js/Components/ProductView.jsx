@@ -4,39 +4,42 @@ export default function ProductView({item, modal, setModal}) {
     const childrens = () => {
         return (
             <>
-                {/*Header*/}
-                <div className="container p-2">
-                    <div className="flex">
-                        <div className="w-1/2">
-                            <h1>Piano</h1>
-                        </div>
-                        <div className="w-1/2 text-end">
-                            <button 
-                                type="button"
-                                className="text-center"
-                                onClick={() => setModal(false)}
-                                >
-                                <svg 
-                                    width="20px" 
-                                    height="20px" 
-                                    viewBox="0 0 24 24" 
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier"> 
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="#0F1729"></path> 
-                                        </g>
-                                </svg>
-                            </button>
-                           
+                <div className="h-130 scroll-smooth md:h-full lg:h-full xl:h-full 2xl:h-full" style={{overflow: 'auto'}}>
+                    {/*Header*/}
+                    <div className="container p-2">
+                        <div className="flex">
+                            <div className="w-1/2">
+                                <h1>Piano</h1>
+                            </div>
+                            <div className="w-1/2 text-end">
+                                <button 
+                                    type="button"
+                                    className="text-center"
+                                    onClick={() => setModal(false)}
+                                    >
+                                    <svg 
+                                        width="20px" 
+                                        height="20px" 
+                                        viewBox="0 0 24 24" 
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier"> 
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="#0F1729"></path> 
+                                            </g>
+                                    </svg>
+                                </button>
+                            
+                            </div>
                         </div>
                     </div>
-                </div>
-                {/*Body*/}
-                <div>
+                    {/*Body*/}
                     <div className="px-5">
-                        <div style={{height: "400px", width: '400px'}}>
+                        <div 
+                            className="h-96 w-full xl:h-112" 
+                            // style={{height: "400px", width: '400px'}}
+                        >
                             <img className=" pb-2 h-full w-full" src={item.image} alt="product image" />
                         </div>
                         <h1 className='font-sans text-xl'>
@@ -49,7 +52,7 @@ export default function ProductView({item, modal, setModal}) {
                                 <span className="text-1xl font-bold text-gray-900 dark:text-white">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</span>
                             </div>
                             <p className="tracking-tight text-gray-900 dark:text-white">{item.description}</p>
-                        </div>             
+                        </div>
                     </div>
                 </div>
             </>
