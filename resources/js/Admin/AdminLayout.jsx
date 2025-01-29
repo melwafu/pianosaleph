@@ -3,10 +3,13 @@ import Navbar from "./Layout/Navbar";
 import Sidebar from "./Layout/Sidebar";
 import Breadcrumb from "./Layout/Breadcrum";
 import { initFlowbite } from 'flowbite';
+import { useEffect } from "react";
 
 
 export default function AdminLayout({head, children}) { 
-    initFlowbite();
+    useEffect(() => {
+        initFlowbite(); 
+    }, []);
   
     return (
         <>
@@ -14,9 +17,10 @@ export default function AdminLayout({head, children}) {
             
             <header>
                 <Navbar />
+                <Sidebar />
             </header>
             <menu>
-                <Sidebar />
+                
             </menu>
             <main>
                 <div className="p-4 mt-14 sm:ml-64">
