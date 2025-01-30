@@ -16,14 +16,18 @@ function Children(products, category) {
         type: "",
         message:""
     });
-    const {data, setData, post, put, errors, processing} = useForm({
+    const {data, setData, post, errors, processing} = useForm({
         id: 0,
         name: "",
         description: "",
         price: null,
         product_category_id: null,
         product_category: null,
-        image: null
+        image: null,
+        image_2: null,
+        image_3: null,
+        image_4: null,
+        image_5: null,
     });
 
     // Refresh Table
@@ -48,7 +52,11 @@ function Children(products, category) {
             price: null,
             product_category_id: null,
             product_category: null,
-            image: null
+            image: null,
+            image_2: null,
+            image_3: null,
+            image_4: null,
+            image_5: null,
         });
         setSelectedOption({value: null, label: "Select..."});
         let fileInput = document.getElementById('file_input');
@@ -242,23 +250,71 @@ function Children(products, category) {
 
                                     <div className='col-span-1 px-1 py-1'>
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload Image</label>
-                                        <input 
-                                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                            aria-describedby="file_input_help" 
-                                            id="file_input" 
-                                            type="file" 
-                                            onChange={(e) => setData("image", e.target.files[0])}
-                                        />
+                                        {/* Image */}
+                                        <div>
+                                            <input 
+                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                                aria-describedby="file_input_help" 
+                                                id="file_input" 
+                                                type="file" 
+                                                onChange={(e) => setData("image", e.target.files[0])}
+                                            />
+                                            {errors.image && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image}</p>}
+                                        </div>
+                                        {/* Image 2 */}
+                                        <div>
+                                            <input 
+                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                                aria-describedby="file_input_help_2" 
+                                                id="file_input_2" 
+                                                type="file" 
+                                                onChange={(e) => setData("image_2", e.target.files[0])}
+                                            />
+                                            {errors.image_2 && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image_2}</p>}
+                                        </div>
+                                        {/* Image 3 */}
+                                        <div>
+                                            <input 
+                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                                aria-describedby="file_input_help_3" 
+                                                id="file_input_3" 
+                                                type="file" 
+                                                onChange={(e) => setData("image_3", e.target.files[0])}
+                                            />
+                                            {errors.image_3 && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image_3}</p>}
+                                        </div>
+                                        {/* Image 4 */}
+                                        <div>
+                                            <input 
+                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                                aria-describedby="file_input_help_4" 
+                                                id="file_input_4" 
+                                                type="file" 
+                                                onChange={(e) => setData("image_4", e.target.files[0])}
+                                            />
+                                            {errors.image_4 && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image_4}</p>}
+                                        </div>
+                                        {/* Image 5 */}
+                                        <div>
+                                            <input 
+                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                                aria-describedby="file_input_help_5" 
+                                                id="file_input_5" 
+                                                type="file" 
+                                                onChange={(e) => setData("image_5", e.target.files[0])}
+                                            />
+                                            {errors.image_5 && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image_5}</p>}
+                                        </div>
                                         <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF.</p>
-                                        {errors.image && <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.image}</p>}
                                         {data.id > 0 && (
                                             <>
-                                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
+                                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Image</label>
                                                 <img style={{height: "215px", width: '285px'}} width={300} className="max-w-lg mx-auto" src={data.image_path} />
                                             </>
                                         )}
                                     </div>
                                 </div>
+
                                 <button 
                                     type="submit" 
                                     className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -329,11 +385,17 @@ function Children(products, category) {
                             {dataTable.data && dataTable.data?.map(item => (
                                 <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td className="px-6 py-4">
-                                        <a 
-                                            href="#" 
-                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            onClick={() => edit(item)}
-                                        >Edit</a>
+                                        <div className='flex'>
+                                            <div className='w-1/2'>
+                                                <a 
+                                                    href="#" 
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                    onClick={() => edit(item)}
+                                                >
+                                                    Edit
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</td>
                                     <td className="px-6 py-4">{item.description}</td>

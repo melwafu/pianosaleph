@@ -15,7 +15,6 @@ const brandList = [
     {brand: "YOUNG CHANG", imagePath: "/docs/images/brands/young-chang.jpeg"},
 ];
 
-
 export default function Home({consoles}) {
     useEffect(() => {
         initFlowbite();
@@ -31,7 +30,7 @@ export default function Home({consoles}) {
                 {/* Carousel */}
                 <div>
                     <div id="default-carousel" className="relative w-full" data-carousel="slide">
-                        <div className="relative h-72 overflow-hidden md:h-96">
+                        <div className="relative h-72 overflow-hidden md:h-96 xl:96 2xl:96">
                             <div className="hidden duration-700 ease-in-out" data-carousel-item="true">
                                 <img src="/docs/images/carousel/img-1.jpg" className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                             </div>
@@ -73,7 +72,6 @@ export default function Home({consoles}) {
                         </button>
                     </div>
                 </div>
-                
                 {/* Brands */}
                 <div className='container mx-auto p-5'>
                     <div>
