@@ -1,0 +1,1 @@
+import{M as r}from"./app-l6ZLxY85.js";function s(t){const e=document.getElementById(t),o={placement:"bottom-right",backdrop:"static",backdropClasses:"bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",closable:!0},n={id:t,override:!0};return new r(e,o,n)}export{s as m};
