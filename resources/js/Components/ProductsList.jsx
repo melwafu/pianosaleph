@@ -97,7 +97,7 @@ const ProductList = ({products}) => {
                                     <div className="flex items-center justify-between">
                                         <span className="text-1xl font-bold text-gray-900 dark:text-white">{Number(item.price).toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</span>
                                     </div>
-                                    <p className="tracking-tight text-gray-900 dark:text-white">{item.description}</p>
+                                    <p dangerouslySetInnerHTML={{ __html: item.description?.replace(/\n/g, '<br>') }}></p>
                                 </div>
                             </div>
                         }

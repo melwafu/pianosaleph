@@ -60,7 +60,15 @@ function Children(products, category) {
         });
         setSelectedOption({value: null, label: "Select..."});
         let fileInput = document.getElementById('file_input');
+        let fileInput_2 = document.getElementById('file_input_2');
+        let fileInput_3 = document.getElementById('file_input_3');
+        let fileInput_4 = document.getElementById('file_input_4');
+        let fileInput_5 = document.getElementById('file_input_5');
         if(fileInput !== null) { fileInput.value = null };
+        if(fileInput_2 !== null) { fileInput_2.value = null };
+        if(fileInput_3 !== null) { fileInput_3.value = null };
+        if(fileInput_4 !== null) { fileInput_4.value = null };
+        if(fileInput_5 !== null) { fileInput_5.value = null };
     };
 
     // Search
