@@ -15,7 +15,7 @@ const ProductList = ({products}) => {
     function modalClose () {
         modal.hide();
     };
-    
+
     const modalView = (
         <div className='container'>
             {/* <!-- Main modal --> */}
@@ -54,27 +54,20 @@ const ProductList = ({products}) => {
                                     <div id="product-carousel" className="relative w-full" data-carousel="static">
                                         <div className="relative h-72 overflow-hidden md:h-96">
                                             <div className="h-96 w-full xl:h-112 hidden duration-700 ease-in-out" data-carousel-item="true">
-                                                <img src={item.image} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                                                <img src={item.image !== null ? item.image : ""} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                                             </div>
                                             <div className="h-96 w-full xl:h-112 hidden duration-700 ease-in-out" data-carousel-item>
-                                                <img src={item.image_2} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                                                <img src={item.image_2 !== null ? item.image_2 : ""} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                                             </div>
                                             <div className="h-96 w-full xl:h-112 hidden duration-700 ease-in-out" data-carousel-item>
-                                                <img src={item.image_3} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                                                <img src={item.image_3 !== null ? item.image_3 : ""} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                                             </div>
                                             <div className="h-96 w-full xl:h-112 hidden duration-700 ease-in-out" data-carousel-item>
-                                                <img src={item.image_4} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                                                <img src={item.image_4 !== null ? item.image_4 : ""} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                                             </div>
                                             <div className="h-96 w-full xl:h-112 hidden duration-700 ease-in-out" data-carousel-item>
-                                                <img src={item.image_5} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                                                <img src={item.image_5 !== null ? item.image_5 : ""} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
                                             </div>
-                                        </div>
-                                        <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                                            <button type="button" className="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-                                            <button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
-                                            <button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
-                                            <button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-                                            <button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
                                         </div>
                                         <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
                                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -120,7 +113,7 @@ const ProductList = ({products}) => {
                 <div className='grid grid-cols-4 auto-cols-max gap-10'>
                     {products.map((item, index) => 
                         {
-                            if(index <= 4) {
+                            if(index <= 3) {
                                 return (
                                     <div 
                                         onClick={() => selectedItem(item)}
@@ -149,7 +142,7 @@ const ProductList = ({products}) => {
                 <div className='grid grid-cols-4 auto-cols-max gap-10'>
                 {products.map((item, index) => 
                         {
-                            if(index > 4 && index <= 8) {
+                            if(index > 3 && index <= 7) {
                                 return (
                                     <div 
                                         onClick={() => selectedItem(item)}
@@ -178,7 +171,7 @@ const ProductList = ({products}) => {
                 <div className="relative w-full" data-carousel="static">
                     <div className="relative h-115 overflow-hidden">
                         {products.map((item, index) => {
-                            if(index <= 4) {
+                            if(index <= 3) {
                                 return (
                                     <div 
                                         onClick={() => selectedItem(item)}
@@ -221,12 +214,12 @@ const ProductList = ({products}) => {
                 </div>
             </div>
 
-            {products.lenght > 4 &&
+            {products.length > 3 &&
                 <div className='sm:hidden'>
                     <div className="relative w-full" data-carousel="static">
                         <div className="relative h-115 overflow-hidden">
                             {products.map((item, index) => {
-                                if(index >= 4 && index <= 8) {
+                                if(index > 3 && index <= 7) {
                                     return (
                                         <div 
                                             onClick={() => selectedItem(item)}

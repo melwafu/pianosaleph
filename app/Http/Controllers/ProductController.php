@@ -27,13 +27,17 @@ class ProductController extends Controller
             $product = Product::find($request->id);
             $product->update($data);
 
-            if($request->image != null) {
+
+            $order = 0;
+            foreach($request->allFiles() as $index => $file) {
+                $count += 1;
+
                 $productImage = DB::table('product_images')
                 ->where('product_id', '=', $request->id)
-                ->where('order', '=', 1)
+                ->where('order', '=', $order)
                 ->first();
 
-                $imageName = time().'.'.$request->image->extension();
+                $imageName = time().$order.'.'.$file->extension();
                 if($productImage) {
                     // // Delete exesting image
                     $file_path = public_path($productImage->image);
@@ -47,129 +51,12 @@ class ProductController extends Controller
                 } else {
                     $productNewImage = new ProductImage;
                     $productNewImage->product_id = $product->id;
-                    $productNewImage->order = 1;
+                    $productNewImage->order = $order;
                     $productNewImage->image = 'docs/images/productsImage/'.$imageName;
                     $productNewImage->save();
                 };
 
-                // // Resize Image
-                // $img = Image::read($request->image->path());
-                // $img->resize(500, 500, function ($constraint) {$constraint->aspectRatio();});
-                // $img->save(public_path('docs/images/productsImage/'. $imageName));
-                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
-            };
-
-            if($request->image_2 != null) {
-                $productImage_2 = DB::table('product_images')
-                ->where('product_id', '=', $request->id)
-                ->where('order', '=', 2)
-                ->first();
-
-                $imageName_2 = time().'.'.$request->image_2->extension();
-                if($productImage_2) {
-                    // // Delete exesting image
-                    $file_path = public_path($productImage_2->image);
-                    if (File::exists($file_path)) {
-                        File::delete($file_path);
-                    };
-                    // Upload new image
-                    $updateProductImage = ProductImage::find($productImage_2->id);
-                    $updateProductImage->image = 'docs/images/productsImage/'.$imageName_2;
-                    $updateProductImage->save();
-                } else {
-                    $productNewImage = new ProductImage;
-                    $productNewImage->product_id = $product->id;
-                    $productNewImage->order = 2;
-                    $productNewImage->image = 'docs/images/productsImage/'.$imageName_2;
-                    $productNewImage->save();
-                };
-
-                $request->image_2->move(public_path('docs/images/productsImage/'), $imageName_2);
-            };
-
-            if($request->image_3 != null) {
-                $productImage_3 = DB::table('product_images')
-                ->where('product_id', '=', $request->id)
-                ->where('order', '=', 3)
-                ->first();
-
-                $imageName_3 = time().'.'.$request->image_3->extension();
-                if($productImage_3) {
-                    // // Delete exesting image
-                    $file_path = public_path($productImage_3->image);
-                    if (File::exists($file_path)) {
-                        File::delete($file_path);
-                    };
-                    // Upload new image
-                    $updateProductImage = ProductImage::find($productImage_3->id);
-                    $updateProductImage->image = 'docs/images/productsImage/'.$imageName_3;
-                    $updateProductImage->save();
-                } else {
-                    $productNewImage = new ProductImage;
-                    $productNewImage->product_id = $product->id;
-                    $productNewImage->order = 3;
-                    $productNewImage->image = 'docs/images/productsImage/'.$imageName_3;
-                    $productNewImage->save();
-                };
-
-                $request->image_3->move(public_path('docs/images/productsImage/'), $imageName_3);
-            };
-
-            if($request->image_4 != null) {
-                $productImage_4 = DB::table('product_images')
-                ->where('product_id', '=', $request->id)
-                ->where('order', '=', 4)
-                ->first();
-
-                $imageName_4 = time().'.'.$request->image_4->extension();
-                if($productImage_4) {
-                    // // Delete exesting image
-                    $file_path = public_path($productImage_4->image);
-                    if (File::exists($file_path)) {
-                        File::delete($file_path);
-                    };
-                    // Upload new image
-                    $updateProductImage = ProductImage::find($productImage_4->id);
-                    $updateProductImage->image = 'docs/images/productsImage/'.$imageName_4;
-                    $updateProductImage->save();
-                } else {
-                    $productNewImage = new ProductImage;
-                    $productNewImage->product_id = $product->id;
-                    $productNewImage->order = 4;
-                    $productNewImage->image = 'docs/images/productsImage/'.$imageName_4;
-                    $productNewImage->save();
-                };
-
-                $request->image_4->move(public_path('docs/images/productsImage/'), $imageName_4);
-            };
-
-            if($request->image_5 != null) {
-                $productImage_5 = DB::table('product_images')
-                ->where('product_id', '=', $request->id)
-                ->where('order', '=', 5)
-                ->first();
-
-                // dd($productImage_5);
-                $imageName_5 = time().'.'.$request->image_5->extension();
-                if($productImage_5) {
-                    // // Delete exesting image
-                    $file_path = public_path($productImage_5->image);
-                    if (File::exists($file_path)) {
-                        File::delete($file_path);
-                    };
-                    // Upload new image
-                    $updateProductImage = ProductImage::find($productImage_5->id);
-                    $updateProductImage->image = 'docs/images/productsImage/'.$imageName_5;
-                    $updateProductImage->save();
-                } else {
-                    $productNewImage = new ProductImage;
-                    $productNewImage->product_id = $product->id;
-                    $productNewImage->order = 5;
-                    $productNewImage->image = 'docs/images/productsImage/'.$imageName_5;
-                    $productNewImage->save();
-                };
-
-                $request->image_5->move(public_path('docs/images/productsImage/'), $imageName_5);
+                $file->move(public_path('docs/images/productsImage/'), $imageName);
             };
 
             DB::commit();
@@ -303,8 +190,12 @@ class ProductController extends Controller
             $product = Product::create($data);
 
             // Upload Image
-            if($request->image != null && $request->image != '') {
-                $imageName = time().'.'.$request->image->extension();
+            $order = 0;
+            foreach($request->allFiles() as $index => $file) {
+                $count += 1;
+                // do uploading like what you are doing in your single file.
+
+                $imageName = time().$order.'.'.$file->extension();
 
                 // // Resize Image
                 // $img = Image::read($request->image->path());
@@ -315,59 +206,11 @@ class ProductController extends Controller
     
                 $productImage = new ProductImage;
                 $productImage->product_id = $product->id;
-                $productImage->order = 1;
+                $productImage->order = $order;
                 $productImage->image = 'docs/images/productsImage/'.$imageName;
                 $productImage->save();
 
-                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
-            };
-
-            if($request->image_2 != null && $request->image_2 != '') {
-                $imageName_2 = time().'.'.$request->image_2->extension();
-
-                $productImage_2 = new ProductImage;
-                $productImage_2->product_id = $product->id;
-                $productImage_2->order = 2;
-                $productImage_2->image = 'docs/images/productsImage/'.$imageName_2;
-                $productImage_2->save();
-
-                $request->image_2->move(public_path('docs/images/productsImage/'), $imageName_2);
-            };
-
-            if($request->image_3 != null && $request->image_3 != '') {
-                $imageName_3 = time().'.'.$request->image_3->extension();
-    
-                $productImage_3 = new ProductImage;
-                $productImage_3->product_id = $product->id;
-                $productImage_3->order = 3;
-                $productImage_3->image = 'docs/images/productsImage/'.$imageName_3;
-                $productImage_3->save();
-
-                $request->image_3->move(public_path('docs/images/productsImage/'), $imageName_3);
-            };
-
-            if($request->image_4 != null && $request->image_4 != '') {
-                $imageName_4 = time().'.'.$request->image_4->extension();
-    
-                $productImage_4 = new ProductImage;
-                $productImage_4->product_id = $product->id;
-                $productImage_4->order = 4;
-                $productImage_4->image = 'docs/images/productsImage/'.$imageName_4;
-                $productImage_4->save();
-
-                $request->image_4->move(public_path('docs/images/productsImage/'), $imageName_4);
-            };
-
-            if($request->image_5 != null && $request->image_5 != '') {
-                $imageName_5 = time().'.'.$request->image_5->extension();
-
-                $productImage_5 = new ProductImage;
-                $productImage_5->product_id = $product->id;
-                $productImage_5->order = 5;
-                $productImage_5->image = 'docs/images/productsImage/'.$imageName_5;
-                $productImage_5->save();
-
-                $request->image_5->move(public_path('docs/images/productsImage/'), $imageName_5);
+                $file->move(public_path('docs/images/productsImage/'), $imageName);
             };
         
             DB::commit();
