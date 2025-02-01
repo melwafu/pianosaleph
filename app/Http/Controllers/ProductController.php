@@ -251,7 +251,6 @@ class ProductController extends Controller
             $join->on('p.id', '=', 'pimg_5.product_id')
                 ->where('pimg_5.order', '=', 5);
         })
-
         ->select(
             'p.id', 
             'p.name', 
@@ -313,61 +312,62 @@ class ProductController extends Controller
                 //     $constraint->aspectRatio();
                 // });
                 // $img->save(public_path('docs/images/productsImage/'. $imageName));
-                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
     
                 $productImage = new ProductImage;
                 $productImage->product_id = $product->id;
                 $productImage->order = 1;
                 $productImage->image = 'docs/images/productsImage/'.$imageName;
                 $productImage->save();
+
+                $request->image->move(public_path('docs/images/productsImage/'), $imageName);
             };
 
             if($request->image_2 != null && $request->image_2 != '') {
                 $imageName_2 = time().'.'.$request->image_2->extension();
 
-                $request->image_2->move(public_path('docs/images/productsImage/'), $imageName_2);
-    
                 $productImage_2 = new ProductImage;
                 $productImage_2->product_id = $product->id;
-                $productImage_2->order = 1;
+                $productImage_2->order = 2;
                 $productImage_2->image = 'docs/images/productsImage/'.$imageName_2;
                 $productImage_2->save();
+
+                $request->image_2->move(public_path('docs/images/productsImage/'), $imageName_2);
             };
 
             if($request->image_3 != null && $request->image_3 != '') {
                 $imageName_3 = time().'.'.$request->image_3->extension();
-
-                $request->image_3->move(public_path('docs/images/productsImage/'), $imageName_3);
     
                 $productImage_3 = new ProductImage;
                 $productImage_3->product_id = $product->id;
-                $productImage_3->order = 1;
+                $productImage_3->order = 3;
                 $productImage_3->image = 'docs/images/productsImage/'.$imageName_3;
                 $productImage_3->save();
+
+                $request->image_3->move(public_path('docs/images/productsImage/'), $imageName_3);
             };
 
             if($request->image_4 != null && $request->image_4 != '') {
                 $imageName_4 = time().'.'.$request->image_4->extension();
-
-                $request->image_4->move(public_path('docs/images/productsImage/'), $imageName_4);
     
                 $productImage_4 = new ProductImage;
                 $productImage_4->product_id = $product->id;
-                $productImage_4->order = 1;
+                $productImage_4->order = 4;
                 $productImage_4->image = 'docs/images/productsImage/'.$imageName_4;
                 $productImage_4->save();
+
+                $request->image_4->move(public_path('docs/images/productsImage/'), $imageName_4);
             };
 
             if($request->image_5 != null && $request->image_5 != '') {
                 $imageName_5 = time().'.'.$request->image_5->extension();
 
-                $request->image_5->move(public_path('docs/images/productsImage/'), $imageName_5);
-    
                 $productImage_5 = new ProductImage;
                 $productImage_5->product_id = $product->id;
-                $productImage_5->order = 1;
+                $productImage_5->order = 5;
                 $productImage_5->image = 'docs/images/productsImage/'.$imageName_5;
                 $productImage_5->save();
+
+                $request->image_5->move(public_path('docs/images/productsImage/'), $imageName_5);
             };
         
             DB::commit();
