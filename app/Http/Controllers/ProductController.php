@@ -30,7 +30,7 @@ class ProductController extends Controller
 
             $order = 0;
             foreach($request->allFiles() as $index => $file) {
-                $count += 1;
+                $order += 1;
 
                 $productImage = DB::table('product_images')
                 ->where('product_id', '=', $request->id)
@@ -192,7 +192,7 @@ class ProductController extends Controller
             // Upload Image
             $order = 0;
             foreach($request->allFiles() as $index => $file) {
-                $count += 1;
+                $order += 1;
                 // do uploading like what you are doing in your single file.
 
                 $imageName = time().$order.'.'.$file->extension();
